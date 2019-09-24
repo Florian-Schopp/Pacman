@@ -106,7 +106,7 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
-def isVisited(node,problem):
+def isVisited(node,problem,toVisit):
     """Checks if a node was already visited
 
         Method to check if the node was already visited. 
@@ -122,8 +122,12 @@ def isVisited(node,problem):
         -------
             Boolean if the node was already visited
         """
+    print(len(problem._visitedlist))
     for visited in problem._visitedlist:
         if visited==node[0]:
+            return True
+    for visited in toVisit:
+        if visited[0]==node[0]:
             return True
     return False
 
@@ -157,10 +161,10 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         if problem.isGoalState(next[0]):
             return next[3]
         for successor in problem.getSuccessors(next[0]):
-            if not isVisited(successor,problem):
+            if not isVisited(successor,problem,toVisit):
                 toVisit.append(successor + (next[3]+(successor[1],),(heuristic(successor[0], problem)+len(next[3])+1)))
         toVisit = sorted(toVisit, key=lambda x: x[4])
-    raise RuntimeError("No way was found!")
+    raise RuntimeError("No path was found!")
     
 
 # Abbreviations
