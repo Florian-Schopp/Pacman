@@ -148,8 +148,9 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         RuntimeError
             If no way for the given problem can be found to reach the goal.
         """
-    toVisit=[]
+    
     initState = problem.getStartState()
+    toVisit=[]
     toVisit.append((initState,) +('',0,tuple(),))
     while len(toVisit)>0:
         next = toVisit.pop(0)
@@ -157,8 +158,8 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             return next[3]
         for successor in problem.getSuccessors(next[0]):
             if not isVisited(successor,problem):
-                toVisit.append(successor + (next[3]+(successor[1],),))
-        toVisit = sorted(toVisit, key=lambda x: (heuristic(x[0], problem)+len(next[3])))
+                toVisit.append(successor + (next[3]+(successor[1],),(heuristic(successor[0], problem)+len(next[3])+1)))
+        toVisit = sorted(toVisit, key=lambda x: x[4])
     raise RuntimeError("No way was found!")
     
 
